@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="./lib/layui/css/layui.css">
+	<link rel="stylesheet" href="./style/admin_common2.css">
+	<script type="application/javascript" src="./js/jquery.min.js"></script>
+	<script type="text/javascript" src="./lib/layui/layui.js"></script>
+	<script type="application/javascript" src="./lib/echarts/echarts.min.js"></script>
+	<script type="application/javascript" src="./js/echarts-gl.min.js"></script>
+	<script type="text/javascript" src="./js/chalk.js" charset="UTF-8"></script>
+	<style type="text/css">
+		body{background: #f0f2f5;}
+		form{width:700px; margin:200px auto;}
+		html,body{height: 100%;}
+		h3{font-size: 36px; text-align: center; margin-bottom: 20px;}
+		.echarts{width:100%; height:100%;}
+		.main{width:100%; height:100%; background: rgba(41,52,65,1);}
+		.nav{padding:20px;}
+		.layui-btn+.layui-btn{margin-left:auto;}
+		.pxp{padding-left: 10px;;}
+		legend{color:#ccc;}
+		.box{color:#fff; font-size: 15px; padding: 10px 40px;}
+		.nav button{margin:0 24px;}
+		#hideData{display:none;}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<div class="layui-row" style="height:100%;">
+			<div class="layui-col-md8" style="height:100%;">
+				<div class="echarts" id="chart1"></div>
+			</div>
+			<div class="layui-col-md4" style="height:100%;">
+				<div class="nav">
+					<button type="button" class="layui-btn" id="test1">数据上传</button>
+					<button type="button" class="layui-btn" id="extract">特征提取</button>
+					<input type="hidden">
+					<button type="button" class="layui-btn" id="export">特征导出</button>
+				</div>
+				<div class="box">
+					<div id="hideData">
+						<div class="fBox">
+							<fieldset class="layui-elem-field layui-field-title">
+								<legend>弹身外形参数</legend>
+							</fieldset>
+							<div class="pxp">
+								<p>弹头类型 = CONE,</p>
+								<p>弹头长度 = 0.530000,</p>
+								<p>弹头底部直径 = 0.343000,</p>
+								<p>弹头钝度直径 = 0.000000,</p>
+								<p>弹身长度 = 4.110000,</p>
+								<p>弹身底部直径 = 0.343000</p>
+							</div>
+						</div>
+						<div class="fBox">
+							<fieldset class="layui-elem-field layui-field-title">
+								<legend>翼舵平面及舵面截面参数</legend>
+							</fieldset>
+							<h5>舵组数1</h5>
+							<div class="pxp">
+								<p>翼型类型 = HEX,</p>
+								<p>每组舵的翼面个数 = 4.0,</p>
+								<p>从弹尾向弹头看去，第1个翼面的周向角 = 45.00,135.00,225.00,315.00,</p>
+								<p>弹头至每个舵截面弦线前缘的位置 = 1.686,2.154,</p>
+								<p>半翼展位置 = 0.172,0.390,</p>
+								<p>第1个舵截面处的弦长 = 1.880,0.944,</p>
+								<p>上表面厚度与弦长比 = 0.008000,0.016000,</p>
+								<p>从截面前缘到上表面最大厚度的弦长比 = 0.250000,0.250000,</p>
+								<p>上表面等厚截面弦长比 = 0.500000,0.500000</p>
+							</div>
+							<h5>舵组数2</h5>
+							<div class="pxp">
+								<p>翼型类型 = HEX,</p>
+								<p>每组舵的翼面个数 = 4.0,</p>
+								<p>从弹尾向弹头看去，第2个翼面的周向角 = 45.00,135.00,225.00,315.00,</p>
+								<p>弹头至每个舵截面弦线前缘的位置 = 4.168,4.272,4.316,</p>
+								<p>半翼展位置 = 0.172,0.431,0.541,</p>
+								<p>第2个舵截面处的弦长 = 0.400,0.186,0.000,</p>
+								<p>上表面厚度与弦长比 = 0.037000,0.081000,</p>
+								<p>从截面前缘到上表面最大厚度的弦长比 = 0.250000,0.250000,</p>
+								<p>上表面等厚截面弦长比 = 0.500000,0.500000</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		let pd1 = false;
+		let pd2 = false;
+		layui.use(['layer','form','upload'],function(){
+			var form = layui.form,
+				upload = layui.upload,
+				layer = layui.layer;
+
+				$('#extract').on('click', function(){
+					if(pd1){
+						$('#hideData').show();
+						pd2 = true;
+					}else{
+						layer.msg('数据未上传！');
+					}
+				});
+				
+				$('#export').on('click',function(){
+					if(pd2){
+						// encodeURIComponent(res.data);
+						// window.open('./data/123特征提取结果.dat','_blank')
+						
+						// <!-- <a href="./data/123特征提取结果.dat" download="./data/123特征提取结果.dat" target="view_window">下载图片</a> -->
+						let a = document.createElement('a'); // 创建a标签下载txt文档
+                               a.style.display = 'none';
+                               a.href = './data/123特征提取结果.dat';
+                               a.download = '123特征提取结果.dat';
+                               a.target = 'view_window';
+                               document.body.appendChild(a)
+                               a.click()
+                               document.body.removeChild(a)
+					}else{
+						layer.msg('特征未提取！');
+					}
+				});
+
+				let myChart = echarts.init(document.getElementById('chart1'), 'chalk')
+				 //执行实例
+				var uploadInst = upload.render({
+					elem: '#test1' //绑定元素
+					,url: './data/456.json' //上传接口
+					,accept:'file'
+					,exts:'las|xyz'
+					,done: function(res){
+						//上传完毕回调
+						// console.log(res);
+						let data = res;
+						var symbolSize = 1;
+						myChart.clear();
+						option = {
+							// backgroundColor:'#000',
+							tooltip:{
+								show:false
+							},
+							grid3D: {
+								show:false,
+								boxHeight:50,
+								boxWidth:50,
+								boxDepth:200,
+								viewControl:{
+									panMouseButton:'right',
+									panSensitivity:1
+								}
+							},
+							xAxis3D: {
+								// min:-2,
+								// max:3
+							},
+							yAxis3D: {
+							},
+							zAxis3D: {
+								max:-0.5,
+							},
+							dataset: {
+								dimensions: [
+								'x',
+								'y',
+								'z'
+								],
+								source: data
+							},
+							series: [
+								{
+								type: 'scatter3D',
+								symbolSize: symbolSize,
+								encode: {
+									x: 'x',
+									y: 'y',
+									z: 'z',
+									// tooltip: [0, 1, 2]
+								}
+								}
+							]
+						};
+						myChart.setOption(option);
+						pd1 = true;
+					}
+					,error: function(){
+					//请求异常回调
+					}
+				});
+
+		})
+	</script>
+</body>
+</html>
